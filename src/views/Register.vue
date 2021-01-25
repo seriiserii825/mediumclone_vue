@@ -30,8 +30,10 @@
                 placeholder="Password"
               />
             </fieldset>
+            <p>{{ counter }}</p>
             <button class="btn btn-primary pull-xs-right">Sign up</button>
           </form>
+          <button @click="increaseCounter">Increase counter</button>
         </div>
       </div>
     </div>
@@ -42,6 +44,14 @@ export default {
   name: 'McvRegister',
   methods: {
     onSubmit() {},
+    increaseCounter() {
+      this.$store.commit('increment')
+    },
+  },
+  computed: {
+    counter() {
+      return this.$store.getters.counter
+    },
   },
 }
 </script>
