@@ -1,17 +1,25 @@
+import apiAuth from '@/api/auth'
+
 export default {
   state: {
-    isSubmitting: false
+    isSubmitting: false,
   },
   mutations: {
-    registerStart (state) {
+    registerStart(state) {
       state.isSubmitting = true
-    }
+    },
   },
   actions: {
-    register ({commit}) {
-      setTimeout(() => {
-        commit('registerStart')
-      }, 2000)
-    }
-  }
+    register(some, credentials) {
+      return new Promise(() => {
+        console.log(some)
+        apiAuth
+          .register(credentials)
+          .then((response) => {
+            console.log(response)
+          })
+          .catch((result) => console.log('result error', result))
+      })
+    },
+  },
 }
