@@ -1,18 +1,26 @@
 import apiAuth from '@/api/auth'
+import {setItem} from '@/helpers/persistanceStorage'
 
 export default {
   state: {
     isSubmitting: false,
+    currentUser: null,
+    validationErrors: null,
+    isUserLoggedIn: null,
   },
   mutations: {
     registerStart(state) {
       state.isSubmitting = true
+      state.validationErrors = null
     },
-    registerSuccess(state) {
+    registerSuccess(state, payload) {
       state.isSubmitting = false
+      state.currentUser = payload
+      state.isUserLoggedIn = true
     },
-    registerFailure(state) {
+    registerFailure(state, payload) {
       state.isSubmitting = false
+      state.validationErrors = payload
     },
   },
   actions: {
@@ -22,12 +30,11 @@ export default {
         apiAuth
           .register(credentials)
           .then((response) => {
-            console.log(response.data.user)
             context.commit('registerSuccess', response.data.user)
+            setItem('accessToken', response.data.user.token)
             resolve(response.data.user)
           })
           .catch((result) => {
-            console.log('result ', result.response.data.errors)
             context.commit('registerFailure', result.response.data.errors)
             reject(result.response.data.errors)
           })

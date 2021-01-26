@@ -7,7 +7,7 @@
           <p class="text-xs-center">
             <router-link :to="{name: 'login'}">Need an account?</router-link>
           </p>
-          Validations error
+          <McvValidationErrors v-if="validationErrors" :validationErrors="validationErrors"></McvValidationErrors>
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
               <input
@@ -45,6 +45,8 @@
   </div>
 </template>
 <script>
+import McvValidationErrors from "@/components/McvValidationErrors";
+
 export default {
   name: 'McvRegister',
   data () {
@@ -61,7 +63,8 @@ export default {
         username: this.username,
         password: this.password
       }).then(user => {
-        console.log('Successful register user', user);
+        console.log('user success', user);
+        this.$router.push({name: 'home'})
       }).catch(error => {
         console.log('We have an error', error);
       })
@@ -70,7 +73,13 @@ export default {
   computed: {
     isSubmitting () {
       return this.$store.state.auth.isSubmitting
+    },
+    validationErrors () {
+      return this.$store.state.auth.validationErrors
     }
+  },
+  components: {
+    McvValidationErrors
   }
 }
 </script>
