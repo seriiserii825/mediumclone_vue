@@ -1,11 +1,13 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
+      <router-link to="/">Home</router-link>
+      |
+      <router-link to="/about">About</router-link>
+      |
       <router-link to="/register">Register</router-link>
     </div>
-    <router-view />
+    <router-view/>
   </div>
 </template>
 <script>
@@ -22,17 +24,19 @@ export default {}
   color: #2c3e50;
   background-color: lightgray;
 }
-
 #nav {
   padding: 30px;
-
   a {
     font-weight: bold;
     color: #2c3e50;
-
     &.router-link-exact-active {
       color: #42b983;
     }
   }
+}
+button:disabled,
+input[type='submit']:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.6 !important;
 }
 </style>
