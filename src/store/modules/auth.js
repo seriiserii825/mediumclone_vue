@@ -8,17 +8,29 @@ export default {
     registerStart(state) {
       state.isSubmitting = true
     },
+    registerSuccess(state) {
+      state.isSubmitting = false
+    },
+    registerFailure(state) {
+      state.isSubmitting = false
+    },
   },
   actions: {
-    register(some, credentials) {
-      return new Promise(() => {
-        console.log(some)
+    register(context, credentials) {
+      return new Promise((resolve, reject) => {
+        context.commit('registerStart')
         apiAuth
           .register(credentials)
           .then((response) => {
-            console.log(response)
+            console.log(response.data.user)
+            context.commit('registerSuccess', response.data.user)
+            resolve(response.data.user)
           })
-          .catch((result) => console.log('result error', result))
+          .catch((result) => {
+            console.log('result ', result.response.data.errors)
+            context.commit('registerFailure', result.response.data.errors)
+            reject(result.response.data.errors)
+          })
       })
     },
   },

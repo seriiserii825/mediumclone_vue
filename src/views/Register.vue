@@ -46,7 +46,15 @@ export default {
   name: 'McvRegister',
   methods: {
     onSubmit () {
-      this.$store.dispatch('register', {})
+      this.$store.dispatch('register', {
+        email: "burduja123@msail.com",
+        username: "serii1883some",
+        password: "serii1981somemother"
+      }).then(user => {
+        console.log('Successful register user', user);
+      }).catch(error => {
+        console.log('We have an error', error);
+      })
     }
   },
   computed: {
