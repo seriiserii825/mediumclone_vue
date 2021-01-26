@@ -46,7 +46,7 @@ export default {
   name: 'McvRegister',
   methods: {
     onSubmit () {
-      this.$store.commit('registerStart')
+      this.$store.dispatch('register')
     }
   },
   computed: {
