@@ -1,25 +1,28 @@
-import apiAuth from '@/api/auth'
+import authApi from '@/api/auth'
 import {setItem} from '@/helpers/persistanceStorage'
 
 const state = {
   isSubmitting: false,
+  isLoggedIn: null,
   currentUser: null,
-  validationErrors: null,
-  isUserLoggedIn: null
+  validationErrors: null
 }
-export const mutationTypes = {
-  registerStart: '[auth] registerStart',
-  registerSuccess: '[auth] registerSuccess',
-  registerFailure: '[auth] registerFailure',
 
-  loginStart: '[auth] loginStart',
-  loginSuccess: '[auth] loginSuccess',
-  loginFailure: '[auth] loginFailure'
+export const mutationTypes = {
+  registerStart: '[auth] Register start',
+  registerSuccess: '[auth] Register success',
+  registerFailure: '[auth] Register failure',
+
+  loginStart: '[auth] Login start',
+  loginSuccess: '[auth] Login success',
+  loginFailure: '[auth] Login failure'
 }
+
 export const actionTypes = {
-  register: '[auth] register',
-  login: '[auth] login'
+  register: '[auth] Register',
+  login: '[auth] Login'
 }
+
 const mutations = {
   [mutationTypes.registerStart](state) {
     state.isSubmitting = true
@@ -27,8 +30,8 @@ const mutations = {
   },
   [mutationTypes.registerSuccess](state, payload) {
     state.isSubmitting = false
+    state.isLoggedIn = true
     state.currentUser = payload
-    state.isUserLoggedIn = true
   },
   [mutationTypes.registerFailure](state, payload) {
     state.isSubmitting = false
@@ -40,19 +43,20 @@ const mutations = {
   },
   [mutationTypes.loginSuccess](state, payload) {
     state.isSubmitting = false
+    state.isLoggedIn = true
     state.currentUser = payload
-    state.isUserLoggedIn = true
   },
   [mutationTypes.loginFailure](state, payload) {
     state.isSubmitting = false
     state.validationErrors = payload
   }
 }
+
 const actions = {
   [actionTypes.register](context, credentials) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       context.commit(mutationTypes.registerStart)
-      apiAuth
+      authApi
         .register(credentials)
         .then(response => {
           context.commit(mutationTypes.registerSuccess, response.data.user)
@@ -64,14 +68,13 @@ const actions = {
             mutationTypes.registerFailure,
             result.response.data.errors
           )
-          reject(result.response.data.errors)
         })
     })
   },
   [actionTypes.login](context, credentials) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       context.commit(mutationTypes.loginStart)
-      apiAuth
+      authApi
         .login(credentials)
         .then(response => {
           context.commit(mutationTypes.loginSuccess, response.data.user)
@@ -83,13 +86,14 @@ const actions = {
             mutationTypes.loginFailure,
             result.response.data.errors
           )
-          reject(result.response.data.errors)
         })
     })
   }
 }
+
 export default {
   state,
-  mutations,
-  actions
+  actions,
+  mutations
+  // getters
 }

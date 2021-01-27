@@ -5,42 +5,44 @@
         <div class="col-md-6 offset-md-3 col-xs-12">
           <h1 class="text-xs-center">Sign up</h1>
           <p class="text-xs-center">
-            <router-link :to="{name: 'login'}">Have an account?</router-link>
+            <router-link :to="{name: 'login'}">
+              Need an account?
+            </router-link>
           </p>
-          <McvValidationErrors
+          <mcv-validation-errors
             v-if="validationErrors"
-            :validationErrors="validationErrors"
-          ></McvValidationErrors>
+            :validation-errors="validationErrors"
+          ></mcv-validation-errors>
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
               <input
-                type="text"
                 class="form-control form-control-lg"
+                type="text"
                 placeholder="Username"
                 v-model="username"
               />
             </fieldset>
             <fieldset class="form-group">
               <input
-                type="email"
                 class="form-control form-control-lg"
+                type="text"
                 placeholder="Email"
                 v-model="email"
               />
             </fieldset>
             <fieldset class="form-group">
               <input
-                type="text"
                 class="form-control form-control-lg"
+                type="password"
                 placeholder="Password"
                 v-model="password"
               />
             </fieldset>
             <button
+              class="btn btn-lg btn-primary pull-xs-right"
               :disabled="isSubmitting"
-              class="btn btn-primary pull-xs-right"
             >
-              Sign up
+              Sign Up
             </button>
           </form>
         </div>
@@ -48,18 +50,29 @@
     </div>
   </div>
 </template>
-<script>
-import McvValidationErrors from '@/components/McvValidationErrors'
-import {actionTypes} from '@/store/modules/auth'
 
+<script>
+import {mapState} from 'vuex'
+
+import McvValidationErrors from '@/components/ValidationErrors.vue'
+import {actionTypes} from '@/store/modules/auth'
 export default {
   name: 'McvRegister',
+  components: {
+    McvValidationErrors
+  },
   data() {
     return {
       email: '',
-      username: '',
       password: '',
+      username: ''
     }
+  },
+  computed: {
+    ...mapState({
+      isSubmitting: state => state.auth.isSubmitting,
+      validationErrors: state => state.auth.validationErrors
+    })
   },
   methods: {
     onSubmit() {
@@ -67,32 +80,12 @@ export default {
         .dispatch(actionTypes.register, {
           email: this.email,
           username: this.username,
-          password: this.password,
+          password: this.password
         })
-        .then((user) => {
-          console.log('user success', user)
+        .then(() => {
           this.$router.push({name: 'home'})
         })
-        .catch((error) => {
-          console.log('We have an error', error)
-        })
-    },
-  },
-  computed: {
-    isSubmitting() {
-      return this.$store.state.auth.isSubmitting
-    },
-    validationErrors() {
-      return this.$store.state.auth.validationErrors
-    },
-  },
-  components: {
-    McvValidationErrors,
-  },
+    }
+  }
 }
 </script>
-<style lang="scss">
-.form-group {
-  margin-bottom: 0.3rem;
-}
-</style>
