@@ -5,6 +5,8 @@
       |
       <router-link to="/about">About</router-link>
       |
+      <router-link to="/login">Login</router-link>
+      |
       <router-link to="/register">Register</router-link>
     </div>
     <router-view />
@@ -23,7 +25,6 @@ export default {}
   height: 100vh;
   color: #2c3e50;
   background-color: lightgray;
-  background-color: magenta;
 }
 #nav {
   padding: 30px;

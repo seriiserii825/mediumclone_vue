@@ -1,4 +1,7 @@
 //https://demo.realworld.io/
+//serii3666
+//seriiburduja@gmail.com
+//seriiserii825
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
