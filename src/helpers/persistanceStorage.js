@@ -6,6 +6,7 @@ export const getItem = (key) => {
     return null
   }
 }
+
 export const setItem = (key, value) => {
   try {
     localStorage.setItem(key, JSON.stringify(value))
