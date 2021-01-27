@@ -7,7 +7,7 @@
       |
       <router-link to="/register">Register</router-link>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 <script>
@@ -23,6 +23,7 @@ export default {}
   height: 100vh;
   color: #2c3e50;
   background-color: lightgray;
+  background-color: magenta;
 }
 #nav {
   padding: 30px;
@@ -34,6 +35,7 @@ export default {}
     }
   }
 }
+
 button:disabled,
 input[type='submit']:disabled {
   cursor: not-allowed !important;
